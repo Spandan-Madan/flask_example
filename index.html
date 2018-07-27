@@ -1,0 +1,117 @@
+<h1 id="flask_example">flask_example</h1>
+
+<p>Simple example for passing information around using flask. Shows how to accept input from user and use the input for something else</p>
+
+<h2 id="howtoinstalldependenciesneededforthistorun">How to install dependencies needed for this to run:</h2>
+
+<ol>
+<li>Install flask. Open terminal and run:</li>
+</ol>
+
+<blockquote>
+  <p>pip install flask</p>
+</blockquote>
+
+<ol>
+<li>Make sure flask is running. Open Terminal and enter command:</li>
+</ol>
+
+<blockquote>
+  <p>flask</p>
+</blockquote>
+
+<p>If you get a response saying something like "Usage: flask [OPTIONS] COMMAND [ARGS]...", you are good to go. If not, re-install flask by consulting http://flask.pocoo.org/</p>
+
+<h2 id="howtorunthebasicexample">How to run the basic example</h2>
+
+<ol>
+<li>clone repo using command: </li>
+</ol>
+
+<blockquote>
+  <p>git clone https://github.com/Spandan-Madan/flask_example.git</p>
+</blockquote>
+
+<ol>
+<li>enter into cloned directory:</li>
+</ol>
+
+<blockquote>
+  <p>cd flask_example</p>
+</blockquote>
+
+<ol>
+<li>Open terminal and run the python script app.py (assuming you have the required dependencies. If you don't read above section):</li>
+</ol>
+
+<blockquote>
+  <p>python app.py</p>
+</blockquote>
+
+<ol>
+<li>Open the browser and go to the url localhost:5000 </li>
+</ol>
+
+<h2 id="makinguseofthisforyourownpurposes">Making use of this for your own purposes:</h2>
+
+<h4 id="qwhendoievenuseflask">Q. When do I even use flask?</h4>
+
+<p>Ans. Flask is great when you have an HTML page on which the content is changing, i.e. is not static. This could be things like :- getting input from the user and using this for something. For example, if you want to make a simple app where you ask user for a number and then you run a calculation on it. Or, ask user to fill a form and then use the information in a form in a python function and then display the output of the function back to the user. </p>
+
+<p>In a nutshell, flask helps you interact with the user through the browser: both getting info and outputting results.</p>
+
+<h4 id="caveats">Caveats:-</h4>
+
+<p>The relaying of information is not straightforward. If you're new to web dev or flask as I was, some things that seem very obvious may turn out to be very hard in this framework. </p>
+
+<p>For ex:- Flask app can ONLY access files inside the folder of the app (in this case the flask_example directory). So if the user passes information like the path of an image to be displayed and the path is on the disk outside this folder, flask cannot access it (to the best of my knowledge). The reason for this (apparently) is security of files, browser scripts should not have access to your disk or else they can do all sorts of things.</p>
+
+<h3 id="workflowofthisexamplerepo">Workflow of this example repo:-</h3>
+
+<h4 id="the2htmlfilesintemplatesdirectory">The 2 HTML files in templates/ directory:</h4>
+
+<p>There are 2 HTML files in the templates/ directory. These define the structure of what is to be displayed to the user, one is for before and the second is for after the user interacts with the app. </p>
+
+<p>Open Student.html and see, it simply has a html form which has one input of the type text. This asks user for the path of an image. Note that paths given here by user need to be relative to the directory of the project, for ex: static/img/test2.png. The name given to this HTML element is "impath". This is important as it will be used in the flask app script app.py. </p>
+
+<p>The second thing this form has is a submit button. When this is clicked, the captured information is sent to app.py.</p>
+
+<h4 id="letstalkabitaboutwhatapppyisdoing">Let's talk a bit about what app.py is doing:</h4>
+
+<p>Initially we are only importing things we need from the flask module. Then we are initializing a flask app called app. </p>
+
+<p>The @app.route() sytnax may be new to some people. To dive deeper into it read more about Decorators in Python. One good source is this: https://medium.com/@nguyenkims/python-decorator-and-flask-3954dd186cda.</p>
+
+<p>The short version for those in a hurry- think of it as just another function. Important difference is that they take other functions as input. </p>
+
+<p>@app.route('/') is called when the page is first loaded. The  @app.route('/result') is called when The thing inside the bracket of the app.route defines when it is called. render<em>template() basically renders the HTML file called. The most important thing to note here is that along with the name of the HTML we can also pass variables into the HTML file here using the render</em>template function in the flask python script.</p>
+
+<p>That is exactly what's happening here. When we submit the HTML form, that is sent following the POST method, which can then triggers the @app.route in line 8 of app.py. This allows us to capture the information entered by the user in line 11 of app.py. Then, this can be used in the app. We use it to pass the captured value into the second HTML file using the render_template function in line 12.</p>
+
+<p>Subsequently, the passed variable is captured in the second html file result.htmk which is rendered with this value. Variables to be passed to HTML are represented in double curly brackets {{}}. As is visible in result.html, the passed variable is captured as {{ result }}, and used to display the image using the <img> tag.</p>
+
+<p>The flow of passing information remains the same. Easy extensions of this example include:-</p>
+
+<ul>
+<li>Capturing different kinds of information. Like number, password, more text etc.</li>
+
+<li>Doing more complicated things to the captured values in the python script. We can add a helper function which processes the values. For ex, squaring the number, checking the password, etc. Based on this computation, we can choose to pass different values from the app.py to the second HTML file.</li>
+
+<li>We can do more complicated things in the second HTML file with the information coming through. For ex: Display images, text, change attributes of the HTML tags like font, color or practically anything.</li>
+</ul>
+
+<p>I chose this as an example precisely for this reason. It is extremely simple, but has all the necessary flexibility to handle relatively complicated flask apps.</p>
+
+<h3 id="somebasicandusefulthingstohelpyououtifyourenewtothesethingslikeiam">Some basic and useful things to help you out if you're new to these things (like I am):</h3>
+
+<ul>
+<li>Flask expects a certain directory structure. Usually images,css and js scripts are kept inside static/ directory.</li>
+
+<li>templates contains the HTML files. If you try to open these without running the flask app on localhost, they will look like there's an error. Don't double click and open. Follow the steps above.</li>
+
+<li>Anything to be displayed in the browser has to be in the HTML. To see how to pass value collected from user to your own use, see workflow of this very simple example above.</li>
+</ul>
+
+<h3 id="ifyoumakeuseofthistomakeacomplicatedappyoucanadditasapp_newpyandcreateapullrequestwhichicanaccept">If you make use of this to make a complicated app, you can add it as app_new.py and create a pull request which I can accept!</h3>
+
+<h1 id="hopethishelps">Hope this helps!</h1>
